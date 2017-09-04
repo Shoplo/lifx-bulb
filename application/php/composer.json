@@ -1,0 +1,13 @@
+{
+    "name": "shoplo/lifx-bulb",
+    "type": "project",
+    "authors": [
+        {
+            "name": "radekb",
+            "email": "radek.baczynski@gmail.com"
+        }
+    ],
+    "require": {
+        "psr/log": "1.0"
+    }
+}
