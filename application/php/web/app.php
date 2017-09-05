@@ -44,6 +44,7 @@ function ifUp( $colorFrom, $colorTo )
 $app->post('/pingdom', function(\Symfony\Component\HttpFoundation\Request $request) {
 
     $parameters = json_decode($request->getContent(), true);
+    mail('adrian.adamiec@shoplo.pl', 'test', print_r($parameters, true));
     switch ($parameters['check_name']) {
         case 'Shoploapp Status Pingdom':
 
