@@ -70,7 +70,7 @@ $app->post('/pingdom', function(\Symfony\Component\HttpFoundation\Request $reque
             }
             if( $parameters['previous_state'] == "DOWN" && $parameters['current_state'] == "UP" ){
 
-                ifUp("red", "blue");
+                ifUp("red", "orange");
             }
 
             break;
