@@ -19,6 +19,16 @@ function sendFilxRequest( $period, $cycles, $colorFrom, $colorTo )
         "period=".$period."&cycles=".$cycles."&color=".$colorTo."&from_color=".$colorFrom);
     curl_exec($ch);
     curl_close($ch);
+
+    $ch = curl_init();
+    $headers = array('Authorization: Bearer cc4485baa5d8703cbcfe853a747a424a9e063afd0445c55c644505e3d50a2465');
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_URL,"https://api.lifx.com/v1/lights/all/state?power=off");
+    curl_setopt($ch, CURLOPT_PUT, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS,
+        "power=off");
+    curl_exec($ch);
+    curl_close($ch);
 }
 
 function ifDown( $colorFrom, $colorTo )
