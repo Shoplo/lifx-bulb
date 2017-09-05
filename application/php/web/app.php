@@ -34,8 +34,8 @@ function ifUp( $colorFrom, $colorTo )
 $app->post('/pingdom', function(\Symfony\Component\HttpFoundation\Request $request) {
 
     $parameters = json_decode($request->getContent(), true);
-    switch ($request->get('type')) {
-        case 'shoploapps':
+    switch ($parameters['check_name']) {
+        case 'Shoploapp Status Pingdom':
 
             if( $parameters['previous_state'] == "UP" && $parameters['current_state'] == "DOWN" ){
 
@@ -48,7 +48,8 @@ $app->post('/pingdom', function(\Symfony\Component\HttpFoundation\Request $reque
 
             break;
 
-        case 'multi':
+        case 'Omni Api Status':
+        case 'Omni Home':
 
             if( $parameters['previous_state'] == "UP" && $parameters['current_state'] == "DOWN" ){
 
@@ -61,7 +62,7 @@ $app->post('/pingdom', function(\Symfony\Component\HttpFoundation\Request $reque
 
             break;
 
-        case 'shoplo':
+        case 'Shoplo Healthcheck':
 
             if( $parameters['previous_state'] == "UP" && $parameters['current_state'] == "DOWN" ){
 
