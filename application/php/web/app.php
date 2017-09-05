@@ -8,17 +8,27 @@ $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
 $app = new \Silex\Application();
 
-function sendFilxRequest( $period, $cycles, $color )
+function sendFilxRequest( $period, $cycles, $colorFrom, $colorTo )
 {
     $ch = curl_init();
     $headers = array('Authorization: Bearer cc4485baa5d8703cbcfe853a747a424a9e063afd0445c55c644505e3d50a2465');
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($ch, CURLOPT_URL,"https://api.lifx.com/v1/lights/all/effects/breathe");
+    curl_setopt($ch, CURLOPT_URL,"https://api.lifx.com/v1/lights/all/effects/pulse");
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS,
-        "period=".$period."&cycles=".$cycles."&color=".$color);
+        "period=".$period."&cycles=".$cycles."&color=".$colorTo."&from_color=".$colorFrom);
     curl_exec($ch);
     curl_close($ch);
+}
+
+function ifDown( $colorFrom, $colorTo )
+{
+    sendFilxRequest(1, 10, $colorFrom, $colorTo);
+}
+
+function ifUp( $colorFrom, $colorTo )
+{
+    sendFilxRequest(1, 10, $colorFrom, $colorTo);
 }
 
 $app->post('/pingdom', function(\Symfony\Component\HttpFoundation\Request $request) {
@@ -29,11 +39,37 @@ $app->post('/pingdom', function(\Symfony\Component\HttpFoundation\Request $reque
 
             if( $parameters['previous_state'] == "UP" && $parameters['current_state'] == "DOWN" ){
 
-                sendFilxRequest(1, 10, "yellow");
+                ifDown("yellow", "red");
             }
             if( $parameters['previous_state'] == "DOWN" && $parameters['current_state'] == "UP" ){
 
-                sendFilxRequest(1, 10, "blue");
+                ifUp("yellow", "green");
+            }
+
+            break;
+
+        case 'multi':
+
+            if( $parameters['previous_state'] == "UP" && $parameters['current_state'] == "DOWN" ){
+
+                ifDown("#6A5AFF", "red");
+            }
+            if( $parameters['previous_state'] == "DOWN" && $parameters['current_state'] == "UP" ){
+
+                ifUp("#6A5AFF", "green");
+            }
+
+            break;
+
+        case 'shoplo':
+
+            if( $parameters['previous_state'] == "UP" && $parameters['current_state'] == "DOWN" ){
+
+                ifDown("red", "red");
+            }
+            if( $parameters['previous_state'] == "DOWN" && $parameters['current_state'] == "UP" ){
+
+                ifUp("red", "blue");
             }
 
             break;
